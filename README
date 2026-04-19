@@ -1,0 +1,100 @@
+# Dubai Mall – Interactive DigiDeck
+
+## Overview
+
+This project is an interactive, DigiDeck-style presentation designed to showcase Dubai Mall as a global retail, lifestyle, and entertainment destination.
+
+Instead of a traditional slide deck, this experience is built as a fully immersive, horizontally navigable web interface that combines storytelling, data visualization, and high-impact visuals.
+
+---
+
+## Key Features
+
+* 🎬 Cinematic Hero Section (Video + fallback slideshow)
+* ↔️ Horizontal Slide Navigation (DigiDeck-style experience)
+* 📊 Data-driven storytelling (visitor metrics, retail stats, growth insights)
+* 🛍 Interactive Retail & Entertainment modules
+* 💎 Luxury-focused design language (gold + black theme)
+* 📱 Responsive layout (optimized for desktop & adaptable for mobile)
+
+---
+
+## Sections Covered
+
+1. Hero – Introduction & positioning
+2. Why Dubai Mall – Scale, reach, and global impact
+3. Retail – Leasing opportunities & formats
+4. Luxury (Fashion Avenue) – Premium positioning
+5. Dining & Lifestyle – Experience-driven engagement
+6. Entertainment – Attractions & footfall drivers
+7. Events & Partnerships – Global platform capabilities
+8. Contact – Partner inquiry module
+
+---
+
+## Tech Stack
+
+* HTML5
+* CSS3 (custom layout, animations, responsive design)
+* Vanilla JavaScript (navigation, interactions, dynamic rendering)
+
+---
+
+## How to Run Locally
+
+1. Download or clone the repository
+2. Ensure folder structure is intact:
+
+```
+project/
+ ├── index.html
+ ├── images/
+ ├── video/
+```
+
+3. Open `index.html` in your browser
+
+---
+
+## Deployment
+
+This project is deployed using Vercel.
+
+Live URL: (add your deployed link here)
+GitHub Repository: (add your repo link here)
+
+---
+
+## Design Approach
+
+The goal was to replicate a DigiDeck-style presentation using web technologies:
+
+* Full-screen sections instead of slides
+* Smooth transitions instead of page reloads
+* Visual storytelling over text-heavy content
+* Premium brand feel inspired by luxury UI systems
+
+---
+
+## AI Tools Used
+
+* Cursor (code generation & structuring)
+* ChatGPT (design guidance, debugging, optimization)
+* Claude (code refinement & iteration support)
+
+---
+
+## Future Improvements
+
+* Performance optimization (lazy loading media)
+* Mobile-first interaction enhancements
+* Advanced animation (GSAP / Framer Motion)
+* CMS integration for dynamic content
+
+---
+
+## Author
+
+Diya K D
+
+---
