@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dubai Mall — The World's #1 Destination</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   RESET & TOKENS
+══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#C9A84C;
+  --gold-lt:#E2C97E;
+  --gold-d:rgba(201,168,76,0.14);
+  --gold-m:rgba(201,168,76,0.32);
+  --blk:#050505;
+  --s1:#0f0f0f;
+  --s2:#171717;
+  --tx:#F5F0E8;
+  --txd:rgba(245,240,232,0.56);
+  --txf:rgba(245,240,232,0.22);
+  --fd:'Cormorant Garamond',Georgia,serif;
+  --fb:'Montserrat',sans-serif;
+  --nav:66px;
+  --ctrl:58px;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+html,body{height:100%;overflow:hidden;background:var(--blk);font-family:var(--fb);color:var(--tx);-webkit-font-smoothing:antialiased}
+button{cursor:pointer;font-family:var(--fb);border:none;background:none}
+input,textarea{font-family:var(--fb);outline:none}
+img{display:block}
+
+/* ══════════════════════════════════════════
+   HORIZONTAL DECK
+   Slides move LEFT ↔ RIGHT
+══════════════════════════════════════════ */
+#deck{
+  position:fixed;
+  top:var(--nav);
+  left:0;right:0;
+  bottom:var(--ctrl);
+  /* Track: all slides in one horizontal row */
+  display:flex;
+  transition:transform .72s var(--ease);
+  will-change:transform;
+}
+
+/* Each slide is exactly viewport-wide */
+.slide{
+  flex-shrink:0;
+  width:100vw;
+  height:100%;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+/* Slide-in animation for inner content */
+.si{opacity:0;transform:translateX(28px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.slide.in .si{opacity:1;transform:translateX(0)}
+.slide.in .si:nth-child(1){transition-delay:.05s}
+.slide.in .si:nth-child(2){transition-delay:.14s}
+.slide.in .si:nth-child(3){transition-delay:.23s}
+.slide.in .si:nth-child(4){transition-delay:.32s}
+.slide.in .si:nth-child(5){transition-delay:.41s}
+.slide.in .si:nth-child(6){transition-delay:.50s}
+.slide.in .si:nth-child(7){transition-delay:.59s}
+.slide.in .si:nth-child(8){transition-delay:.68s}
+
+/* ══════════════════════════════════════════
+   TOP NAV
+══════════════════════════════════════════ */
+#nav{
+  position:fixed;top:0;left:0;right:0;
+  height:var(--nav);z-index:900;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 44px;
+  background:rgba(5,5,5,.93);
+  backdrop-filter:blur(28px);
+  border-bottom:1px solid var(--gold-d);
+}
+.nlogo{display:flex;align-items:center;gap:13px;cursor:pointer}
+.nlogo-box{width:34px;height:34px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:10px;letter-spacing:.1em;color:var(--gold);font-weight:700}
+.nlogo-t{font-family:var(--fd);font-size:17px;letter-spacing:.1em;color:var(--tx)}
+.nlogo-s{font-size:8px;letter-spacing:.32em;color:var(--gold);font-weight:600;margin-top:1px}
+.nlinks{display:flex;gap:0;align-items:center}
+.nl{font-size:9px;letter-spacing:.18em;font-weight:600;color:var(--txd);padding:6px 13px;transition:color .22s;position:relative;border-bottom:1px solid transparent}
+.nl:hover{color:var(--tx)}
+.nl.on{color:var(--gold);border-bottom-color:var(--gold)}
+.ncta{border:1px solid var(--gold);color:var(--gold);padding:8px 20px;font-size:9px;letter-spacing:.18em;font-weight:700;transition:all .22s;margin-left:10px}
+.ncta:hover{background:var(--gold);color:var(--blk)}
+
+/* ══════════════════════════════════════════
+   BOTTOM CONTROL BAR  ← PREV / NEXT →
+══════════════════════════════════════════ */
+#ctrl{
+  position:fixed;bottom:0;left:0;right:0;
+  height:var(--ctrl);z-index:900;
+  display:flex;align-items:center;
+  background:rgba(5,5,5,.93);
+  backdrop-filter:blur(28px);
+  border-top:1px solid var(--gold-d);
+}
+
+/* PREV button */
+#btn-prev{
+  display:flex;align-items:center;gap:9px;
+  color:var(--txd);font-size:9px;letter-spacing:.22em;font-weight:700;
+  padding:0 32px;height:100%;
+  transition:color .22s;border-right:1px solid var(--gold-d);
+}
+#btn-prev:hover{color:var(--gold)}
+#btn-prev:disabled{opacity:.22;pointer-events:none}
+
+/* NEXT button */
+#btn-next{
+  display:flex;align-items:center;gap:9px;
+  color:var(--txd);font-size:9px;letter-spacing:.22em;font-weight:700;
+  padding:0 32px;height:100%;
+  transition:color .22s;border-left:1px solid var(--gold-d);
+  margin-left:auto;
+}
+#btn-next:hover{color:var(--gold)}
+#btn-next:disabled{opacity:.22;pointer-events:none}
+
+/* Dot track — centre of bar */
+#dot-track{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(201,168,76,.22);
+  transition:all .35s var(--ease);cursor:pointer;border:none;padding:0;
+}
+.dot.on{background:var(--gold);width:22px;border-radius:3px}
+.dot:hover:not(.on){background:rgba(201,168,76,.55)}
+
+/* Slide counter */
+#slide-no{
+  padding:0 28px;font-size:9px;letter-spacing:.22em;color:var(--txf);font-weight:600;white-space:nowrap;
+  border-right:1px solid var(--gold-d);
+}
+#slide-no strong{color:var(--gold)}
+
+/* Slide title label */
+#slide-title-bar{
+  padding:0 28px;font-size:9px;letter-spacing:.18em;color:var(--txd);font-weight:600;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:240px;
+}
+
+/* SVG arrow icons */
+.arr{width:15px;height:15px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+/* Right-edge rail */
+#rail{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:800;display:flex;flex-direction:column;gap:10px}
+.rp{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.15);transition:all .35s var(--ease);cursor:pointer;border:none;padding:0}
+.rp.on{background:var(--gold);height:20px;border-radius:2px}
+.rp:hover{background:rgba(201,168,76,.5)}
+
+/* ══════════════════════════════════════════
+   SHARED HELPERS
+══════════════════════════════════════════ */
+.ey{display:flex;align-items:center;gap:11px;margin-bottom:13px}
+.ey span{font-size:9px;letter-spacing:.34em;color:var(--gold);font-weight:700}
+.gb{width:38px;height:1px;background:var(--gold);flex-shrink:0}
+.sh{font-family:var(--fd);font-weight:300;line-height:1.07;color:var(--tx)}
+.gi{color:var(--gold);font-style:italic}
+.bt{padding:11px 26px;background:var(--gold);color:var(--blk);font-size:9px;letter-spacing:.2em;font-weight:700;transition:all .22s}
+.bt:hover{background:var(--gold-lt);transform:translateX(2px)}
+.bo{padding:11px 26px;background:transparent;border:1px solid var(--gold-m);color:var(--txd);font-size:9px;letter-spacing:.2em;font-weight:600;transition:all .22s}
+.bo:hover{border-color:var(--gold);color:var(--gold)}
+.cx{max-width:1280px;margin:0 auto;padding:0 72px;width:100%}
+.fill-abs{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+/* ══════════════════════════════════════════
+   S0 — HERO  (VIDEO-FIRST)
+══════════════════════════════════════════ */
+#s0{background:var(--blk)}
+
+/* ── VIDEO WRAPPER ──
+   Drop your video file here.
+   Supports: mp4, webm
+   ─────────────────────────────────────────
+   HOW TO USE YOUR OWN VIDEO:
+   1. Place video file in same folder as this HTML
+   2. Replace the <source> src below, e.g.:
+      src="dubai-mall-hero.mp4"
+   3. The video auto-plays muted & loops.
+   ────────────────────────────────────────── */
+.hero-video-wrap{position:absolute;inset:0;overflow:hidden;z-index:0}
+.hero-video-wrap video{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  pointer-events:none;
+}
+/* Fallback slideshow shown when no video or video not loaded */
+.hslides{position:absolute;inset:0}
+.hsl-img{position:absolute;inset:0;opacity:0;transition:opacity 2.2s ease}
+.hsl-img.on{opacity:1}
+.hsl-img img{width:100%;height:100%;object-fit:cover;transition:transform 12s ease}
+.hsl-img.on img{transform:scale(1.06)}
+
+.hov1{position:absolute;inset:0;background:linear-gradient(135deg,rgba(5,5,5,.82) 0%,rgba(5,5,5,.18) 60%,rgba(5,5,5,.55) 100%);z-index:1}
+.hov2{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,5,5,.96) 0%,transparent 52%);z-index:1}
+.hgbar{position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,transparent 10%,var(--gold) 50%,transparent 90%);z-index:2}
+
+.hbody{
+  position:relative;z-index:3;
+  flex:1;display:flex;flex-direction:column;justify-content:center;
+  padding:0 88px;max-width:1000px;
+}
+.hey{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.hey span{font-size:9px;letter-spacing:.36em;color:var(--gold);font-weight:700}
+.ht1{font-family:var(--fd);font-size:clamp(52px,8.5vw,114px);font-weight:300;line-height:.96;color:var(--tx)}
+.ht2{font-family:var(--fd);font-size:clamp(52px,8.5vw,114px);font-weight:600;font-style:italic;line-height:1.05;background:linear-gradient(135deg,var(--gold-lt),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:28px}
+.hstats{display:flex;gap:48px;margin-bottom:32px}
+.hsn{font-family:var(--fd);font-size:30px;font-weight:600;color:var(--gold);line-height:1}
+.hsl{font-size:9px;letter-spacing:.22em;color:var(--txd);margin-top:4px}
+.hbtns{display:flex;gap:12px}
+.hdots{position:absolute;bottom:20px;left:88px;display:flex;gap:8px;z-index:3}
+.hd{height:2px;border:none;background:rgba(255,255,255,.22);transition:all .4s;cursor:pointer;padding:0}
+.hd.on{background:var(--gold)}
+
+/* ══════════════════════════════════════════
+   S1 — WHY DUBAI MALL
+══════════════════════════════════════════ */
+#s1{background:var(--blk)}
+/* Full-height two-column layout — no scrolling needed, everything fits in viewport */
+.why-wrap{
+  flex:1;overflow:hidden;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0;
+  padding:0;
+}
+.why-wrap::-webkit-scrollbar{display:none}
+/* Left column: text + KPI grid */
+.why-left-col{
+  padding:28px 48px 28px 72px;
+  display:flex;flex-direction:column;justify-content:center;
+  overflow:hidden;
+  border-right:1px solid var(--gold-d);
+}
+/* Right column: fact cards + image stacked, fills full height */
+.why-right-col{
+  display:grid;
+  grid-template-rows:1fr 1fr;
+  overflow:hidden;
+}
+.why-l{
+  /* kept for legacy compat — not used in new layout */
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:48px;align-items:start;
+  width:100%;max-width:1280px;margin:auto 0;
+  padding:8px 0;
+}
+.kgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--gold-d);border:1px solid var(--gold-d);margin-top:16px}
+.kc{background:var(--blk);padding:14px 14px;transition:background .3s}
+.kc:hover{background:var(--s2)}
+.kn{font-family:var(--fd);font-size:28px;font-weight:600;color:var(--gold);line-height:1;margin-bottom:2px}
+.kl{font-size:9px;font-weight:700;letter-spacing:.09em;color:var(--tx);margin-bottom:1px}
+.ks{font-size:9px;color:var(--txd)}
+/* wf card styles */
+.wf{padding:13px 15px;border:1px solid var(--gold-d);background:var(--s1);display:flex;gap:11px;transition:all .22s}
+.wf:hover{border-color:var(--gold-m);background:var(--s2)}
+.wfi{font-size:18px;flex-shrink:0;margin-top:1px}
+.wft{font-family:var(--fd);font-size:15px;font-weight:400;color:var(--tx);margin-bottom:2px}
+.wfb{font-size:11px;line-height:1.65;color:var(--txd);font-weight:300}
+/* Right image — fills lower half of right column completely */
+.why-img{position:relative;overflow:hidden;border-top:1px solid var(--gold-d);height:100%}
+.why-img img{width:100%;height:100%;object-fit:cover;transition:transform 10s ease}
+.why-img:hover img{transform:scale(1.03)}
+.why-img-ov{position:absolute;inset:0;background:linear-gradient(to right,rgba(5,5,5,.2),transparent)}
+/* Fact cards fills top half evenly */
+.wfacts{display:flex;flex-direction:column;justify-content:space-evenly;padding:20px 36px;height:100%;overflow:hidden}
+
+/* ══════════════════════════════════════════
+   S2 — RETAIL
+══════════════════════════════════════════ */
+#s2{background:var(--s1)}
+.retail-l{display:grid;grid-template-columns:300px 1fr;flex:1;overflow:hidden}
+.rtabs{padding:20px 24px;border-right:1px solid var(--gold-d);display:flex;flex-direction:column;overflow-y:auto}
+.rtabs::-webkit-scrollbar{display:none}
+.rtab{padding:12px;border-left:3px solid transparent;cursor:pointer;transition:all .2s;border-bottom:1px solid rgba(201,168,76,.06)}
+.rtab:hover{background:var(--s2)}
+.rtab.on{border-left-color:var(--gold);background:var(--s2)}
+.rtl{font-size:8px;letter-spacing:.28em;color:var(--gold);font-weight:700;margin-bottom:3px}
+.rtt{font-family:var(--fd);font-size:15px;font-weight:400;color:var(--txd)}
+.rtab.on .rtt{color:var(--tx)}
+.lrow{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto;padding-top:14px;border-top:1px solid var(--gold-d)}
+.lc2{padding:4px 9px;border:1px solid var(--gold-d);font-size:9px;color:var(--txd);transition:all .2s}
+.lc2:hover{border-color:var(--gold-m);color:var(--gold)}
+/* The panel — identical to .edetail */
+.rpanel{position:relative;overflow:hidden}
+
+
+/* ══════════════════════════════════════════
+   S3 — LUXURY / FASHION AVENUE
+══════════════════════════════════════════ */
+#s3{background:var(--blk)}
+.lux-l{display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden}
+.lleft{padding:40px 56px;display:flex;flex-direction:column;justify-content:center;overflow-y:auto}
+.lleft::-webkit-scrollbar{display:none}
+.lright{position:relative;overflow:hidden}
+.lright img{width:100%;height:100%;object-fit:cover;transition:transform 12s ease}
+.lright:hover img{transform:scale(1.03)}
+.lright-ov{position:absolute;inset:0;background:linear-gradient(to right,var(--blk) 0%,transparent 100%)}
+.cl{margin:18px 0 20px;display:flex;flex-direction:column;gap:9px}
+.ci{display:flex;align-items:flex-start;gap:11px}
+.cib{width:17px;height:17px;flex-shrink:0;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--gold);margin-top:1px}
+.cit{font-size:12px;line-height:1.65;color:var(--txd);font-weight:300}
+.bticker{display:flex;flex-wrap:wrap;gap:14px;padding-top:14px;border-top:1px solid var(--gold-d)}
+.btag{font-size:10px;letter-spacing:.13em;font-weight:500}
+
+/* ══════════════════════════════════════════
+   S4 — DINING
+══════════════════════════════════════════ */
+#s4{background:var(--s1)}
+.dining-l{display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden}
+.dleft{padding:40px 52px;display:flex;flex-direction:column;justify-content:center}
+.dright{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:rgba(201,168,76,.07)}
+.dc{position:relative;overflow:hidden;cursor:pointer}
+.dc img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform .6s ease}
+.dc:hover img{transform:scale(1.06)}
+.dcov{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,5,5,.93) 0%,rgba(5,5,5,.06) 100%);transition:opacity .35s}
+.dc:hover .dcov{opacity:.7}
+.dcc{position:absolute;bottom:0;padding:18px 16px;transform:translateY(6px);transition:transform .35s}
+.dc:hover .dcc{transform:translateY(0)}
+.dcrow{display:flex;align-items:center;gap:7px;margin-bottom:3px}
+.dcbar{width:3px;height:17px}
+.dcname{font-family:var(--fd);font-size:17px;font-weight:400;color:var(--tx)}
+.dccount{font-family:var(--fd);font-size:12px;margin-bottom:3px}
+.dcdesc{font-size:10px;line-height:1.6;color:rgba(245,240,232,.75);font-weight:300}
+.dsr{display:flex;gap:36px;margin:16px 0}
+.dsn{font-family:var(--fd);font-size:38px;font-weight:600;color:var(--gold);line-height:1}
+.dsl{font-size:9px;letter-spacing:.15em;color:var(--txd);margin-top:3px}
+
+/* ══════════════════════════════════════════
+   S5 — ENTERTAINMENT
+══════════════════════════════════════════ */
+#s5{background:var(--blk)}
+.ent-l{display:grid;grid-template-columns:272px 1fr;flex:1;overflow:hidden}
+.elist{background:var(--s1);overflow-y:auto}
+.elist::-webkit-scrollbar{display:none}
+.elist-hd{padding:24px 20px 14px;border-bottom:1px solid var(--gold-d)}
+.ei{padding:17px 18px;border-left:3px solid transparent;border-bottom:1px solid rgba(201,168,76,.06);cursor:pointer;transition:all .2s}
+.ei:hover{background:var(--s2)}
+.ei.on{border-left-color:var(--gold);background:var(--s2)}
+.eitag{font-size:8px;letter-spacing:.28em;color:var(--gold);font-weight:700;margin-bottom:2px}
+.eititle{font-family:var(--fd);font-size:14px;color:var(--txd)}
+.ei.on .eititle{color:var(--tx)}
+.edetail{position:relative;overflow:hidden}
+.edetail img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:opacity .45s ease}
+.edov{position:absolute;inset:0;background:linear-gradient(135deg,rgba(5,5,5,.95) 0%,rgba(5,5,5,.28) 65%,transparent 100%)}
+.edcontent{position:relative;z-index:2;padding:52px 48px;display:flex;flex-direction:column;justify-content:center;height:100%}
+.edtag{font-size:9px;letter-spacing:.3em;color:var(--gold);font-weight:700;margin-bottom:10px}
+.edtitle{font-family:var(--fd);font-size:38px;font-weight:400;color:var(--tx);margin-bottom:14px;line-height:1.1}
+.eddesc{font-size:13px;line-height:1.8;color:rgba(245,240,232,.78);font-weight:300;max-width:420px;margin-bottom:22px}
+.edstat{font-family:var(--fd);font-size:44px;font-weight:600;color:var(--gold);line-height:1}
+.edsl{font-size:10px;letter-spacing:.18em;color:var(--txd);margin-top:3px}
+
+/* ══════════════════════════════════════════
+   S6 — EVENTS & PARTNERSHIPS
+══════════════════════════════════════════ */
+#s6{background:var(--s1)}
+.events-l{display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden}
+.eleft{padding:40px 52px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--gold-d)}
+.eright{overflow-y:auto;padding:28px 40px}
+.eright::-webkit-scrollbar{display:none}
+.etrow{display:flex;border-bottom:1px solid var(--gold-d);margin-bottom:20px}
+.etb{padding:9px 16px;font-size:9px;letter-spacing:.2em;font-weight:700;background:transparent;border:none;color:var(--txd);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .22s}
+.etb.on{color:var(--gold);border-bottom-color:var(--gold)}
+.ep{display:none}.ep.on{display:block}
+.evgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.evc{padding:16px;border:1px solid var(--gold-d);background:var(--blk);transition:all .2s}
+.evc:hover{border-color:var(--gold-m);transform:translateY(-1px)}
+.evico{font-size:18px;margin-bottom:5px}
+.evyr{font-size:8px;letter-spacing:.22em;color:var(--gold);font-weight:700;margin-bottom:4px}
+.evtitle{font-family:var(--fd);font-size:15px;color:var(--tx);margin-bottom:5px}
+.evdesc{font-size:10px;line-height:1.65;color:var(--txd);font-weight:300}
+.spgrid{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.spc{padding:16px;border:1px solid var(--gold-d);background:var(--blk);cursor:pointer;transition:all .2s;position:relative}
+.spc.on{border-color:var(--gold-m);background:var(--s2)}
+.sptop{position:absolute;top:0;left:0;right:0;height:2px}
+.sptier{font-family:var(--fd);font-size:17px;color:var(--tx);margin-bottom:3px}
+.spdesc{font-size:11px;line-height:1.6;color:var(--txd);font-weight:300;margin-bottom:8px}
+.spperks{display:flex;flex-wrap:wrap;gap:5px}
+.spperk{font-size:8px;letter-spacing:.1em;color:var(--txf);padding:3px 7px;border:1px solid rgba(255,255,255,.07)}
+.actgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.acleft{padding:20px;border:1px solid var(--gold-d);background:var(--blk)}
+.acright{position:relative;overflow:hidden;min-height:180px}
+.acright img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.evstat-n{font-family:var(--fd);font-size:64px;font-weight:600;color:var(--gold);line-height:1}
+.evstat-l{font-size:10px;letter-spacing:.18em;color:var(--txd);margin-top:2px;margin-bottom:16px}
+
+/* ══════════════════════════════════════════
+   S7 — PARTNER WITH US  (Contact)
+   Full-height, nothing cut off
+══════════════════════════════════════════ */
+#s7{background:var(--blk)}
+.cbg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.055}
+.cdeco{position:absolute;border-radius:50%;border:1px solid rgba(201,168,76,.07);pointer-events:none}
+.contact-l{
+  display:grid;grid-template-columns:1fr 1fr;
+  flex:1;position:relative;z-index:2;overflow:hidden;
+}
+.cleft{
+  padding:36px 52px;
+  display:flex;flex-direction:column;justify-content:center;
+  border-right:1px solid var(--gold-d);
+  overflow-y:auto;
+}
+.cleft::-webkit-scrollbar{display:none}
+.cright{
+  padding:32px 44px;
+  display:flex;flex-direction:column;justify-content:center;
+  overflow-y:auto;
+}
+.cright::-webkit-scrollbar{display:none}
+/* Info cards */
+.cicard{padding:12px 16px;border:1px solid var(--gold-d);background:var(--s1);margin-bottom:8px}
+.cidept{font-size:8px;letter-spacing:.25em;color:var(--gold);font-weight:700;margin-bottom:2px}
+.ciemail{font-size:13px;color:var(--tx);margin-bottom:1px}
+.ciphone{font-size:11px;color:var(--txd)}
+/* Quick stats row */
+.cstats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--gold-d);border:1px solid var(--gold-d);margin-top:20px}
+.csk{background:var(--blk);padding:14px 12px}
+.csn{font-family:var(--fd);font-size:26px;font-weight:600;color:var(--gold);line-height:1;margin-bottom:2px}
+.csl{font-size:8px;letter-spacing:.12em;color:var(--txd)}
+/* Form */
+.cform{background:var(--s1);border:1px solid var(--gold-d);padding:28px}
+.fl{font-size:8px;letter-spacing:.22em;color:var(--gold);font-weight:700;display:block;margin-bottom:5px}
+.fi{width:100%;padding:9px 11px;background:var(--blk);border:1px solid var(--gold-d);color:var(--tx);font-size:12px;transition:border-color .22s;margin-bottom:10px}
+.fi:focus{border-color:var(--gold)}
+.fi-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fi-row .fi{margin-bottom:0}
+.fi-row-wrap{margin-bottom:10px}
+.ichips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.ich{padding:4px 10px;font-size:9px;border:1px solid var(--gold-d);background:transparent;color:var(--txd);transition:all .2s}
+.ich.on{background:var(--gold);color:var(--blk);border-color:var(--gold)}
+.fsub{width:100%;padding:12px;background:var(--gold);border:none;color:var(--blk);font-size:10px;letter-spacing:.22em;font-weight:700;transition:background .22s;margin-top:6px}
+.fsub:hover{background:var(--gold-lt)}
+/* Footer bar inside slide */
+.fbar{
+  padding:12px 52px;
+  border-top:1px solid var(--gold-d);
+  display:flex;justify-content:space-between;align-items:center;
+  position:relative;z-index:2;flex-shrink:0;
+}
+.fbar span{font-size:9px;color:var(--txf);letter-spacing:.08em}
+
+/* ══════════════════════════════════════════
+   IMAGE PLACEHOLDER BOXES
+   (visual guide for where to put photos)
+══════════════════════════════════════════ */
+.img-ph{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#0e0c09 0%,#1a1609 50%,#0a0a0a 100%);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:6px;text-align:center;padding:20px;
+}
+.img-ph::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(201,168,76,.025) 40px,rgba(201,168,76,.025) 41px);
+}
+.img-ph-icon{font-size:1.8rem;opacity:.45;position:relative;z-index:1}
+.img-ph-label{font-size:9px;letter-spacing:.2em;color:rgba(201,168,76,.45);font-weight:700;position:relative;z-index:1;text-transform:uppercase}
+.img-ph-hint{font-size:8px;color:rgba(245,240,232,.2);position:relative;z-index:1}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media(max-width:900px){
+  #rail{display:none}
+  .nlinks .nl{display:none}
+  #nav{padding:0 18px}
+  .cx{padding:0 20px}
+  .why-l,.lux-l,.dining-l,.ent-l,.events-l,.contact-l,.retail-l{grid-template-columns:1fr!important}
+  .wfacts,.lright,.dright,.elist,.eleft,.cleft,.rtabs{display:none!important}
+  .hbody{padding:0 24px}
+  .lleft,.dleft,.eright,.cright,.edcontent,.rpcontent{padding:22px!important}
+  .ht1,.ht2{font-size:clamp(36px,12vw,62px)!important}
+  #slide-title-bar{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════
+     TOP NAV
+════════════════════════════════════ -->
+<nav id="nav">
+  <div class="nlogo" onclick="go(0)">
+    <div class="nlogo-box">DM</div>
+    <div>
+      <div class="nlogo-t">DUBAI MALL</div>
+      <div class="nlogo-s">THE WORLD'S #1 DESTINATION</div>
+    </div>
+  </div>
+  <div class="nlinks">
+    <button class="nl" data-s="1" onclick="go(1)">WHY DUBAI MALL</button>
+    <button class="nl" data-s="2" onclick="go(2)">RETAIL</button>
+    <button class="nl" data-s="3" onclick="go(3)">LUXURY</button>
+    <button class="nl" data-s="4" onclick="go(4)">DINING</button>
+    <button class="nl" data-s="5" onclick="go(5)">ENTERTAINMENT</button>
+    <button class="nl" data-s="6" onclick="go(6)">EVENTS</button>
+    <button class="ncta" onclick="go(7)">PARTNER WITH US</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════
+     RIGHT-EDGE RAIL
+════════════════════════════════════ -->
+<div id="rail">
+  <button class="rp on" onclick="go(0)" title="Home"></button>
+  <button class="rp" onclick="go(1)" title="Why Dubai Mall"></button>
+  <button class="rp" onclick="go(2)" title="Retail"></button>
+  <button class="rp" onclick="go(3)" title="Luxury"></button>
+  <button class="rp" onclick="go(4)" title="Dining"></button>
+  <button class="rp" onclick="go(5)" title="Entertainment"></button>
+  <button class="rp" onclick="go(6)" title="Events"></button>
+  <button class="rp" onclick="go(7)" title="Partner With Us"></button>
+</div>
+
+<!-- ════════════════════════════════════
+     HORIZONTAL DECK
+════════════════════════════════════ -->
+<div id="deck">
+
+<!-- ════ SLIDE 0 · HERO ════ -->
+<section class="slide" id="s0">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       🎬 HERO VIDEO — PAGE 1
+       ═══════════════════════════════════════════════════════════
+       HOW TO ADD YOUR OWN VIDEO:
+       ─────────────────────────
+       OPTION A · Local file (easiest):
+         1. Put your video file (e.g. "dubai.mp4") in the SAME
+            FOLDER as this HTML file.
+         2. Change line below from:
+               src="hero.mp4"
+            to:
+               src="dubai.mp4"   (or whatever your file is named)
+         3. Save and open the HTML — video plays automatically.
+
+       OPTION B · YouTube / Hosted URL (no download needed):
+         YouTube doesn't allow direct embedding this way.
+         Instead use a direct .mp4 link from your server/CDN,
+         e.g.: src="https://yourserver.com/dubai-hero.mp4"
+
+       OPTION C · Keep image slideshow (current default):
+         Just delete the <source> line — the 3 images below
+         will show as a slideshow instead.
+
+       The video: autoplays, muted, loops, fullscreen cover.
+       Supported formats: .mp4 (H.264), .webm
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="hero-video-wrap" id="heroVid">
+    <video autoplay muted loop playsinline id="heroVideo" style="display:none">
+      <!-- ▼▼▼ CHANGE THIS LINE TO YOUR VIDEO FILE ▼▼▼ -->
+      <source src="video/mall.mp4" type="video/mp4">
+      <!-- ▲▲▲ CHANGE THIS LINE TO YOUR VIDEO FILE ▲▲▲ -->
+    </video>
+
+    <!-- ═══════════════════════════════════════════════════════
+         📸 HERO BACKGROUND IMAGES — PAGE 1 (fallback slideshow)
+         ═══════════════════════════════════════════════════════
+         These 3 images rotate when no video is loaded.
+         To change: replace the URL inside each src="..."
+         
+         IMAGE 1 (first shown):  Burj Khalifa / Dubai skyline
+         IMAGE 2 (after 6s):     Dubai Fountain at night
+         IMAGE 3 (after 12s):    Dubai Mall interior
+
+         Where to get images:
+         • Official:  thedubaimall.com → Media / Press
+         • Free:      unsplash.com → search "Dubai Mall"
+         • Your own:  just drop the jpg/png in this folder
+                      and write src="yourfile.jpg"
+    ══════════════════════════════════════════════════════= -->
+    <div class="hslides" id="hslides">
+      <!-- IMAGE 1 ↓ change src here -->
+      <div class="hsl-img on" id="hsi0"><img src="images/image1.jpeg" alt="Dubai"/></div>
+      <!-- IMAGE 2 ↓ change src here -->
+      <div class="hsl-img" id="hsi1"><img src="images/image2.jpeg" alt="Fountain"/></div>
+      <!-- IMAGE 3 ↓ change src here -->
+      <div class="hsl-img" id="hsi2"><img src="images/image4.jpeg" alt="Mall"/></div>
+    </div>
+  </div>
+
+  <div class="hov1"></div>
+  <div class="hov2"></div>
+  <div class="hgbar"></div>
+
+  <div class="hbody">
+    <div class="hey si"><div class="gb"></div><span>EMAAR PROPERTIES · DOWNTOWN DUBAI · SINCE 2008</span></div>
+    <div class="ht1 si">The World's</div>
+    <div class="ht2 si">#1 Destination.</div>
+    <div class="hstats si">
+      <div><div class="hsn">111M</div><div class="hsl">VISITORS IN 2024</div></div>
+      <div><div class="hsn">1,200+</div><div class="hsl">RETAIL OUTLETS</div></div>
+      <div><div class="hsn">13M SQ FT</div><div class="hsl">TOTAL AREA</div></div>
+    </div>
+    <div class="hbtns si">
+      <button class="bt" onclick="go(7)">BECOME A PARTNER</button>
+      <button class="bo" onclick="go(1)">EXPLORE THE DECK →</button>
+    </div>
+  </div>
+
+  <div class="hdots">
+    <button class="hd on" style="width:26px" onclick="hs(0)"></button>
+    <button class="hd" style="width:8px" onclick="hs(1)"></button>
+    <button class="hd" style="width:8px" onclick="hs(2)"></button>
+  </div>
+</section>
+
+<!-- ════ SLIDE 1 · WHY DUBAI MALL ════ -->
+<section class="slide" id="s1">
+  <div class="why-wrap">
+    <!-- LEFT COLUMN: text + KPI grid -->
+    <div class="why-left-col">
+      <div class="ey si"><div class="gb"></div><span>WHY DUBAI MALL</span></div>
+      <h2 class="sh si" style="font-size:clamp(28px,3.8vw,52px);margin-bottom:10px">Not a shopping center.<br><em class="gi">A global platform.</em></h2>
+      <p class="si" style="font-size:12px;line-height:1.8;color:var(--txd);font-weight:300;max-width:440px;margin-bottom:14px">
+        The most visited destination on Earth — surpassing Times Square, Central Park, and every major theme park globally. Not measured in square feet. Measured in impact.
+      </p>
+      <div class="kgrid si">
+        <div class="kc"><div class="kn" data-t="111" data-x="M+">0</div><div class="kl">Annual Visitors</div><div class="ks">#1 on Earth</div></div>
+        <div class="kc"><div class="kn" data-t="98" data-x="%">0</div><div class="kl">Occupancy</div><div class="ks">Near-capacity</div></div>
+        <div class="kc"><div class="kn" data-t="60" data-x="%+">0</div><div class="kl">International</div><div class="ks">190+ countries</div></div>
+        <div class="kc"><div class="kn" data-t="1200" data-x="+">0</div><div class="kl">Retail Outlets</div><div class="ks">All categories</div></div>
+        <div class="kc"><div class="kn" data-t="200" data-x="+">0</div><div class="kl">Dining Venues</div><div class="ks">Every cuisine</div></div>
+        <div class="kc"><div class="kn" data-t="13" data-x="M sqft">0</div><div class="kl">Total Area</div><div class="ks">200+ pitches</div></div>
+      </div>
+    </div>
+    <!-- RIGHT COLUMN: top = fact cards, bottom = full image -->
+    <div class="why-right-col">
+      <!-- Top half: 4 fact cards -->
+      <div class="wfacts si">
+        <div class="wf"><div class="wfi">📍</div><div><div class="wft">Prime Location</div><div class="wfb">Heart of Downtown Dubai, beside Burj Khalifa. Direct metro access + 14,000 parking spaces.</div></div></div>
+        <div class="wf"><div class="wfi">✈️</div><div><div class="wft">Global Gateway</div><div class="wfb">Dubai Airport serves 90M+ travelers/year. 60%+ of visitors are international tourists.</div></div></div>
+        <div class="wf"><div class="wfi">👑</div><div><div class="wft">Affluent Demographics</div><div class="wfb">85% expat base. Per-capita income USD 40,000+. Spend 20–30% above regional norms.</div></div></div>
+        <div class="wf"><div class="wfi">📈</div><div><div class="wft">$408M Expansion Underway</div><div class="wfb">240 new luxury retail & dining venues. Invest now. Grow with the world's most ambitious retail asset.</div></div></div>
+      </div>
+      <!-- Bottom half: image fills completely -->
+      <!--
+        📸 WHY IMAGE — Change image here
+        Replace the URL below with your preferred Dubai aerial/exterior shot
+        Good sources: thedubaimall.com/media  or  images.unsplash.com
+        Current: Burj Al Arab aerial
+      -->
+      <div class="why-img">
+        <img src="images/image4.webp" alt="Dubai"/>
+        <div class="why-img-ov"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ SLIDE 2 · RETAIL ════ -->
+<section class="slide" id="s2">
+  <div class="retail-l" style="flex:1">
+    <!-- Left sidebar -->
+    <div class="rtabs">
+      <div style="padding-top:4px">
+        <div class="ey si" style="margin-bottom:8px"><div class="gb"></div><span>RETAIL OPPORTUNITY</span></div>
+        <h2 class="sh si" style="font-size:clamp(20px,2.6vw,32px);margin-bottom:6px">Your Brand.<br><em class="gi">The World's Stage.</em></h2>
+        <p class="si" style="font-size:10px;line-height:1.7;color:var(--txd);font-weight:300;margin-bottom:16px">98% occupancy. 111M annual visitors. Choose your format.</p>
+      </div>
+      <div class="rtab on si" onclick="rTab(this,0)"><div class="rtl">LUXURY</div><div class="rtt">Fashion Avenue & Boutiques</div></div>
+      <div class="rtab si" onclick="rTab(this,1)"><div class="rtl">FLAGSHIP</div><div class="rtt">Global Flagship Concepts</div></div>
+      <div class="rtab si" onclick="rTab(this,2)"><div class="rtl">POP-UP</div><div class="rtt">Short-Term Activations</div></div>
+      <div class="rtab si" onclick="rTab(this,3)"><div class="rtl">F&B</div><div class="rtt">Dining Concepts</div></div>
+      <div class="lrow si" style="margin-top:auto">
+        <div class="lc2">Luxury</div><div class="lc2">Flagship</div><div class="lc2">Mid-Market</div>
+        <div class="lc2">Pop-Up</div><div class="lc2">F&B</div><div class="lc2">Experience</div>
+      </div>
+    </div>
+    <!-- Right: JS-rendered panel, identical to #ed in Entertainment -->
+    <div class="rpanel" id="rpanel"></div>
+  </div>
+</section>
+
+<!-- ════ SLIDE 3 · LUXURY / FASHION AVENUE ════ -->
+<section class="slide" id="s3">
+  <div class="lux-l" style="flex:1">
+    <!-- Left: content -->
+    <div class="lleft">
+      <div class="ey si"><div class="gb"></div><span>FASHION AVENUE</span></div>
+      <h2 class="sh si" style="font-size:clamp(28px,3.8vw,52px);margin-bottom:14px">The Middle East's<br><em class="gi">Most Prestigious</em><br>Retail Address.</h2>
+      <p class="si" style="font-size:13px;line-height:1.85;color:var(--txd);font-weight:300;max-width:430px">A world unto itself — vaulted ceilings, private salons, white-glove concierge. 200+ of the world's most coveted brands in one dedicated luxury district.</p>
+      <div class="cl si">
+        <div class="ci"><div class="cib">✓</div><div class="cit">High-net-worth expat demographic — 85%+ of UAE population</div></div>
+        <div class="ci"><div class="cib">✓</div><div class="cit">Per-capita spend 20–30% above regional norms</div></div>
+        <div class="ci"><div class="cib">✓</div><div class="cit">Private VIP lounges & bespoke white-glove concierge</div></div>
+        <div class="ci"><div class="cib">✓</div><div class="cit">+6% YoY footfall growth — 111M visitors in 2024</div></div>
+        <div class="ci"><div class="cib">✓</div><div class="cit">24% year-on-year rent growth driven by unparalleled demand</div></div>
+      </div>
+      <div class="bticker si">
+        <span class="btag" style="color:var(--gold)">Louis Vuitton</span>
+        <span class="btag" style="color:var(--txd)">Chanel</span>
+        <span class="btag" style="color:var(--gold)">Gucci</span>
+        <span class="btag" style="color:var(--txd)">Hermès</span>
+        <span class="btag" style="color:var(--gold)">Cartier</span>
+        <span class="btag" style="color:var(--txd)">Tiffany & Co.</span>
+        <span class="btag" style="color:var(--gold)">Rolex</span>
+        <span class="btag" style="color:var(--txd)">Dior</span>
+        <span class="btag" style="color:var(--gold)">Prada</span>
+        <span class="btag" style="color:var(--txd)">Balenciaga</span>
+        <span class="btag" style="color:var(--gold)">Saint Laurent</span>
+        <span class="btag" style="color:var(--txd)">Valentino</span>
+        <span class="btag" style="color:var(--gold)">Van Cleef & Arpels</span>
+        <span class="btag" style="color:var(--txd)">Louboutin</span>
+      </div>
+      <div class="si" style="margin-top:20px">
+        <button class="bt" onclick="go(7)">INQUIRE ABOUT FASHION AVENUE →</button>
+      </div>
+    </div>
+    <!-- Right: image
+         📸 LUXURY IMAGE — Fashion Avenue corridor / luxury boutique interior
+         Official: thedubaimall.com/media → Fashion Avenue
+         Replace src below with your image path or URL
+    -->
+    <div class="lright">
+      <img src="images/gucci.webp" alt="Fashion Avenue"/>
+      <div class="lright-ov"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ SLIDE 4 · DINING ════ -->
+<section class="slide" id="s4">
+  <div class="dining-l" style="flex:1">
+    <!-- Left: content -->
+    <div class="dleft">
+      <div class="ey si"><div class="gb"></div><span>DINING & LIFESTYLE</span></div>
+      <h2 class="sh si" style="font-size:clamp(26px,3.5vw,46px);margin-bottom:10px">Food is not<br>an afterthought.<br><em class="gi">It's a destination.</em></h2>
+      <div class="dsr si">
+        <div><div class="dsn">200+</div><div class="dsl">DINING VENUES</div></div>
+        <div><div class="dsn">22</div><div class="dsl">FOUNTAIN SHOWS/DAY</div></div>
+        <div><div class="dsn">170+</div><div class="dsl">GLOBAL CONCEPTS</div></div>
+      </div>
+      <p class="si" style="font-size:12px;line-height:1.85;color:var(--txd);font-weight:300;max-width:360px;margin-bottom:20px">
+        Guests plan their entire day around it. Fine dining with Burj Khalifa views, our new Chinatown district, fountain-terrace restaurants, and 170+ global concepts — all under one extraordinary roof.
+      </p>
+      <button class="bt si" onclick="go(7)">INQUIRE ABOUT F&B LEASING →</button>
+    </div>
+    <!-- Right: 2×2 dining image grid
+         📸 Replace each img src with your own:
+         Card 1: Fine dining restaurant interior / Burj Khalifa view
+         Card 2: International cuisine / food hall
+         Card 3: Chinatown Dubai Mall
+         Card 4: Dubai Fountain from restaurant terrace
+    -->
+    <div class="dright">
+      <div class="dc">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&q=80" alt="Fine Dining"/>
+        <div class="dcov"></div>
+        <div class="dcc">
+          <div class="dcrow"><div class="dcbar" style="background:#C9A84C"></div><div class="dcname">Fine Dining</div></div>
+          <div class="dccount" style="color:#C9A84C">30+ signature restaurants</div>
+          <div class="dcdesc">Burj Khalifa backdrop. Global chefs. Fountain views.</div>
+        </div>
+      </div>
+      <div class="dc">
+        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=700&q=80" alt="Global"/>
+        <div class="dcov"></div>
+        <div class="dcc">
+          <div class="dcrow"><div class="dcbar" style="background:#8B9E7B"></div><div class="dcname">Global Cuisines</div></div>
+          <div class="dccount" style="color:#8B9E7B">170+ international concepts</div>
+          <div class="dcdesc">Tokyo to Paris. Every cuisine under one roof.</div>
+        </div>
+      </div>
+      <div class="dc">
+        <img src="images/chinatown.avif" alt="Chinatown"/>
+        <div class="dcov"></div>
+        <div class="dcc">
+          <div class="dcrow"><div class="dcbar" style="background:#E8503A"></div><div class="dcname">Chinatown</div></div>
+          <div class="dccount" style="color:#E8503A">Dedicated pan-Asian district</div>
+          <div class="dcdesc">A world within a world. Dining, spas, retail.</div>
+        </div>
+      </div>
+      <div class="dc">
+        <img src="images/fountain.jpg" alt="Fountain"/>
+        <div class="dcov"></div>
+        <div class="dcc">
+          <div class="dcrow"><div class="dcbar" style="background:#6B8CAE"></div><div class="dcname">Fountain Terrace</div></div>
+          <div class="dccount" style="color:#6B8CAE">Premium waterfront</div>
+          <div class="dcdesc">World's most iconic dining real estate. 22 shows daily.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ SLIDE 5 · ENTERTAINMENT ════ -->
+<section class="slide" id="s5">
+  <div class="ent-l" style="flex:1">
+    <!-- Left: list -->
+    <div class="elist">
+      <div class="elist-hd">
+        <div class="ey si" style="margin-bottom:5px"><div class="gb"></div><span>ATTRACTIONS</span></div>
+        <p class="si" style="font-size:11px;line-height:1.7;color:var(--txd);font-weight:300">World-record experiences that generate footfall no single brand could match alone.</p>
+      </div>
+      <div class="ei on si" onclick="eTab(this,0)"><div class="eitag">WORLD RECORD</div><div class="eititle">Dubai Aquarium & Underwater Zoo</div></div>
+      <div class="ei si" onclick="eTab(this,1)"><div class="eitag">OLYMPIC STANDARD</div><div class="eititle">Dubai Ice Rink</div></div>
+      <div class="ei si" onclick="eTab(this,2)"><div class="eitag">ICONIC</div><div class="eititle">Dubai Fountain</div></div>
+      <div class="ei si" onclick="eTab(this,3)"><div class="eitag">WORLD'S TALLEST</div><div class="eititle">At The Top, Burj Khalifa</div></div>
+      <div class="ei si" onclick="eTab(this,4)"><div class="eitag">NEW</div><div class="eititle">Zabeel Sports District</div></div>
+      <div class="ei si" onclick="eTab(this,5)"><div class="eitag">ENTERTAINMENT</div><div class="eititle">Reel Cinemas & Immersive VR</div></div>
+    </div>
+    <!-- Right: image detail
+         📸 Images loaded dynamically from ED[] array in JS below.
+         To replace: update each entData[i].img URL in the script section.
+    -->
+    <div class="edetail" id="ed"></div>
+  </div>
+</section>
+
+<!-- ════ SLIDE 6 · EVENTS & PARTNERSHIPS ════ -->
+<section class="slide" id="s6">
+  <div class="events-l" style="flex:1">
+    <!-- Left: headline + CTA -->
+    <div class="eleft">
+      <div class="ey si"><div class="gb"></div><span>EVENTS & PARTNERSHIPS</span></div>
+      <h2 class="sh si" style="font-size:clamp(26px,3.5vw,48px);margin-bottom:10px">A Global Platform.<br><em class="gi">Not Just<br>a Building.</em></h2>
+      <div class="si">
+        <div class="evstat-n" data-t="30" data-x="">0</div>
+        <div class="evstat-l">YEARS OF DUBAI SHOPPING FESTIVAL</div>
+      </div>
+      <p class="si" style="font-size:12px;line-height:1.85;color:var(--txd);font-weight:300;max-width:360px;margin-bottom:22px">
+        From intimate brand activations to city-scale festivals — Dubai Mall's infrastructure accommodates any concept, any scale, any ambition. Every event is a global moment.
+      </p>
+      <div class="si" style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+        <button class="bt" onclick="go(7)">BOOK AN EVENT CONSULTATION →</button>
+        <button class="bo" onclick="go(7)">REQUEST SPONSORSHIP DECK →</button>
+      </div>
+    </div>
+    <!-- Right: tabbed content -->
+    <div class="eright">
+      <div class="etrow">
+        <button class="etb on" onclick="evTab(this,'ep0')">EVENTS</button>
+        <button class="etb" onclick="evTab(this,'ep1')">SPONSORSHIP</button>
+        <button class="etb" onclick="evTab(this,'ep2')">ACTIVATIONS</button>
+      </div>
+      <!-- Events tab -->
+      <div class="ep on" id="ep0">
+        <div class="evgrid">
+          <div class="evc"><div class="evico">🎪</div><div class="evyr">30 YEARS RUNNING</div><div class="evtitle">Dubai Shopping Festival</div><div class="evdesc">40-day event. 800+ brands. Billions in global earned media exposure.</div></div>
+          <div class="evc"><div class="evico">👗</div><div class="evyr">ONGOING</div><div class="evtitle">Fashion Shows</div><div class="evdesc">World-class runway events in Fashion Avenue. Paris-level production values.</div></div>
+          <div class="evc"><div class="evico">⭐</div><div class="evyr">YEAR-ROUND</div><div class="evtitle">Celebrity Appearances</div><div class="evdesc">A-list events driving millions of global social impressions and earned PR.</div></div>
+          <div class="evc"><div class="evico">🎆</div><div class="evyr">ANNUAL</div><div class="evtitle">NYE & Holiday Events</div><div class="evdesc">World-record fireworks. Broadcast globally. Unmissable brand exposure.</div></div>
+          <div class="evc"><div class="evico">🎨</div><div class="evyr">SEASONAL</div><div class="evtitle">Art & Culture Exhibitions</div><div class="evdesc">Rotating shows from global artists and leading cultural institutions.</div></div>
+          <div class="evc"><div class="evico">🚀</div><div class="evyr">YEAR-ROUND</div><div class="evtitle">Brand Launches</div><div class="evdesc">Automotive, tech, fashion — the world's biggest launches happen here.</div></div>
+        </div>
+        <button class="bt" onclick="go(7)" style="margin-top:4px">BOOK AN EVENT →</button>
+      </div>
+      <!-- Sponsorship tab -->
+      <div class="ep" id="ep1">
+        <div class="spgrid">
+          <div class="spc on" id="sp0" onclick="spTab(0)"><div class="sptop" style="background:#C9A84C"></div><div class="sptier">Title Partner</div><div class="spdesc">Exclusive naming rights. Zone ownership. Maximum reach across all touchpoints — digital, physical, and broadcast.</div><div class="spperks"><span class="spperk">Zone naming rights</span><span class="spperk">All channels</span><span class="spperk">VIP access</span><span class="spperk">Co-campaigns</span><span class="spperk">Exclusive category</span></div></div>
+          <div class="spc" id="sp1" onclick="spTab(1)"><div class="sptop" style="background:#8B9E7B"></div><div class="sptier">Presenting Partner</div><div class="spdesc">Premier visibility. High-traffic placement. Full multimedia integration across in-mall, digital, and PR channels.</div><div class="spperks"><span class="spperk">Premium placement</span><span class="spperk">Activation space</span><span class="spperk">Data insights</span><span class="spperk">VIP hospitality</span></div></div>
+          <div class="spc" id="sp2" onclick="spTab(2)"><div class="sptop" style="background:#6B8CAE"></div><div class="sptier">Brand Partner</div><div class="spdesc">Targeted event activations with measurable ROI, real-time footfall analytics, and full campaign reporting.</div><div class="spperks"><span class="spperk">Event integration</span><span class="spperk">Pop-up space</span><span class="spperk">Social co-branding</span><span class="spperk">Analytics</span></div></div>
+        </div>
+        <button class="bt" onclick="go(7)">BUILD A SPONSORSHIP PACKAGE →</button>
+      </div>
+      <!-- Activations tab -->
+      <div class="ep" id="ep2">
+        <div class="actgrid">
+          <div class="acleft">
+            <p style="font-family:var(--fd);font-size:16px;color:var(--tx);margin-bottom:14px">Why Activate Here?</p>
+            <div class="ci" style="margin-bottom:9px"><div class="cib">✓</div><div class="cit">111M visitors — unmatched single-venue reach globally</div></div>
+            <div class="ci" style="margin-bottom:9px"><div class="cib">✓</div><div class="cit">60%+ international audience from 190+ countries</div></div>
+            <div class="ci" style="margin-bottom:9px"><div class="cib">✓</div><div class="cit">2–4 hour average dwell time per visit</div></div>
+            <div class="ci" style="margin-bottom:9px"><div class="cib">✓</div><div class="cit">Real-time footfall & campaign analytics provided</div></div>
+            <div class="ci" style="margin-bottom:9px"><div class="cib">✓</div><div class="cit">Year-round programming calendar for always-on visibility</div></div>
+            <div class="ci" style="margin-bottom:16px"><div class="cib">✓</div><div class="cit">Adjacent to Burj Khalifa — world's most iconic backdrop</div></div>
+            <button class="bt" onclick="go(7)">PLAN YOUR ACTIVATION →</button>
+          </div>
+          <!--
+            📸 ACTIVATION IMAGE
+            Replace src: Unsplash "brand activation event crowd"
+            or use your own brand event photo
+          -->
+          <div class="acright">
+            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=900&q=80" alt="Activation"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ SLIDE 7 · PARTNER WITH US (Contact) ════ -->
+<section class="slide" id="s7">
+  <!--
+    📸 CONTACT BACKGROUND IMAGE (very faint, behind content)
+    Replace the background-image URL below with your image.
+    Recommended: Dubai Mall exterior at night.
+  -->
+  <div class="cbg" style="background-image:url('images/image1.jpeg')"></div>
+  <div class="cdeco" style="width:500px;height:500px;right:-200px;top:50%;transform:translateY(-50%)"></div>
+  <div class="cdeco" style="width:300px;height:300px;right:-90px;top:50%;transform:translateY(-50%)"></div>
+
+  <div class="contact-l" style="flex:1">
+    <!-- LEFT: info -->
+    <div class="cleft">
+      <div class="ey si"><div class="gb"></div><span>BECOME A PARTNER</span></div>
+      <h2 class="sh si" style="font-size:clamp(28px,3.8vw,50px);margin-bottom:14px">Your Next Chapter<br><em class="gi">Starts Here.</em></h2>
+      <p class="si" style="font-size:13px;line-height:1.85;color:var(--txd);font-weight:300;max-width:380px;margin-bottom:24px">
+        Whether you're a global luxury brand seeking a flagship home, a sponsor wanting to reach 111M affluent visitors, or an event producer looking for the world's greatest stage — our team is ready to build something extraordinary with you.
+      </p>
+
+      <!-- Contact info cards -->
+      <div class="cicard si">
+        <div class="cidept">RETAIL & LEASING</div>
+        <div class="ciemail">leasing@dubaimall.com</div>
+        <div class="ciphone">+971 4 362 7500</div>
+      </div>
+      <div class="cicard si">
+        <div class="cidept">EVENTS & SPONSORSHIP</div>
+        <div class="ciemail">events@dubaimall.com</div>
+        <div class="ciphone">+971 4 362 7500</div>
+      </div>
+      <div class="cicard si">
+        <div class="cidept">BRAND PARTNERSHIPS</div>
+        <div class="ciemail">partnerships@dubaimall.com</div>
+        <div class="ciphone">+971 4 362 7500</div>
+      </div>
+
+      <!-- Quick stats -->
+      <div class="cstats si">
+        <div class="csk"><div class="csn">111M</div><div class="csl">ANNUAL VISITORS</div></div>
+        <div class="csk"><div class="csn">98%</div><div class="csl">OCCUPANCY RATE</div></div>
+        <div class="csk"><div class="csn">24%</div><div class="csl">YOY RENT GROWTH</div></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: form -->
+    <div class="cright">
+      <div class="cform si">
+        <p style="font-family:var(--fd);font-size:22px;font-weight:400;color:var(--tx);margin-bottom:16px">Start the Conversation</p>
+        <div id="fArea">
+          <label class="fl">I'M INTERESTED IN</label>
+          <div class="ichips">
+            <button class="ich" onclick="this.classList.toggle('on')">Retail Leasing</button>
+            <button class="ich" onclick="this.classList.toggle('on')">Fashion Avenue</button>
+            <button class="ich" onclick="this.classList.toggle('on')">F&B Concept</button>
+            <button class="ich" onclick="this.classList.toggle('on')">Sponsorship</button>
+            <button class="ich" onclick="this.classList.toggle('on')">Brand Activation</button>
+            <button class="ich" onclick="this.classList.toggle('on')">Event Booking</button>
+            <button class="ich" onclick="this.classList.toggle('on')">Pop-Up</button>
+            <button class="ich" onclick="this.classList.toggle('on')">Other</button>
+          </div>
+          <div class="fi-row fi-row-wrap">
+            <div>
+              <label class="fl">FULL NAME</label>
+              <input class="fi" id="fN" type="text" placeholder="Your name"/>
+            </div>
+            <div>
+              <label class="fl">COMPANY / BRAND</label>
+              <input class="fi" id="fC" type="text" placeholder="Your company"/>
+            </div>
+          </div>
+          <label class="fl">EMAIL ADDRESS</label>
+          <input class="fi" id="fE" type="email" placeholder="your@email.com"/>
+          <label class="fl">PHONE NUMBER</label>
+          <input class="fi" id="fP" type="tel" placeholder="+971 or your country code"/>
+          <label class="fl">MESSAGE (OPTIONAL)</label>
+          <textarea class="fi" rows="2" placeholder="Tell us about your concept, timeline, or questions…" style="resize:none;margin-bottom:4px"></textarea>
+          <button class="fsub" onclick="submitF()">SEND INQUIRY →</button>
+        </div>
+        <div id="fOk" style="display:none;text-align:center;padding:28px 0">
+          <div style="font-size:36px;margin-bottom:12px">✨</div>
+          <div style="font-family:var(--fd);font-size:26px;font-weight:300;color:var(--gold);margin-bottom:8px">Thank You</div>
+          <p style="font-size:12px;line-height:1.7;color:var(--txd)">A member of our team will be in touch<br>within 24 hours. Welcome to Dubai Mall.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer bar -->
+  <div class="fbar">
+    <span style="font-family:var(--fd);font-size:13px;color:var(--txd)">Dubai Mall · An Emaar Properties Destination · Downtown Dubai</span>
+    <span>© 2025 DUBAI MALL · ALL RIGHTS RESERVED</span>
+  </div>
+</section>
+
+</div><!-- /#deck -->
+
+<!-- ════════════════════════════════════
+     BOTTOM CONTROL BAR
+     ← PREV  [dots]  NEXT →
+════════════════════════════════════ -->
+<div id="ctrl">
+  <!-- PREV -->
+  <button id="btn-prev" onclick="go(cur-1)" disabled>
+    <svg class="arr" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    PREV
+  </button>
+
+  <!-- Slide number -->
+  <div id="slide-no"><strong>01</strong>&thinsp;/&thinsp;08</div>
+
+  <!-- Slide title -->
+  <div id="slide-title-bar">HOME</div>
+
+  <!-- Dots -->
+  <div id="dot-track">
+    <button class="dot on" onclick="go(0)" title="Home"></button>
+    <button class="dot" onclick="go(1)" title="Why Dubai Mall"></button>
+    <button class="dot" onclick="go(2)" title="Retail"></button>
+    <button class="dot" onclick="go(3)" title="Luxury"></button>
+    <button class="dot" onclick="go(4)" title="Dining"></button>
+    <button class="dot" onclick="go(5)" title="Entertainment"></button>
+    <button class="dot" onclick="go(6)" title="Events"></button>
+    <button class="dot" onclick="go(7)" title="Partner With Us"></button>
+  </div>
+
+  <!-- NEXT -->
+  <button id="btn-next" onclick="go(cur+1)">
+    NEXT
+    <svg class="arr" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+</div>
+
+<!-- ════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════ -->
+<script>
+/* ══ CONSTANTS ══ */
+const SLIDES = ['s0','s1','s2','s3','s4','s5','s6','s7'];
+const TITLES = ['HOME','WHY DUBAI MALL','RETAIL','LUXURY','DINING','ENTERTAINMENT','EVENTS','PARTNER WITH US'];
+const N = SLIDES.length;
+let cur = 0;
+
+const deck     = document.getElementById('deck');
+const btnPrev  = document.getElementById('btn-prev');
+const btnNext  = document.getElementById('btn-next');
+const slideNo  = document.getElementById('slide-no');
+const titleBar = document.getElementById('slide-title-bar');
+const dots     = document.querySelectorAll('.dot');
+const rps      = document.querySelectorAll('.rp');
+const navLinks = document.querySelectorAll('.nl[data-s]');
+
+/* ══ HORIZONTAL GO ══ */
+function go(i) {
+  if (i < 0 || i >= N) return;
+  cur = i;
+  deck.style.transform = `translateX(-${i * 100}vw)`;
+  updateUI();
+  setTimeout(() => triggerIn(i), 50);
+}
+
+function updateUI() {
+  // Counter
+  slideNo.innerHTML = `<strong>${String(cur+1).padStart(2,'0')}</strong>&thinsp;/&thinsp;${String(N).padStart(2,'0')}`;
+  // Title
+  titleBar.textContent = TITLES[cur];
+  // Buttons
+  btnPrev.disabled = cur === 0;
+  btnNext.disabled = cur === N - 1;
+  // Bottom dots
+  dots.forEach((d,i) => d.classList.toggle('on', i === cur));
+  // Rail pips
+  document.querySelectorAll('.rp').forEach((p,i) => p.classList.toggle('on', i === cur));
+  // Nav links
+  navLinks.forEach(l => l.classList.toggle('on', parseInt(l.dataset.s) === cur));
+}
+
+/* Note: .rp is used for both retail panels AND rail pips — we need to keep them separate */
+const railPips  = document.querySelectorAll('#rail .rp');
+// retail panels now JS-rendered, no querySelectorAll needed
+
+// Override updateUI rail logic
+function updateUI() {
+  slideNo.innerHTML = `<strong>${String(cur+1).padStart(2,'0')}</strong>&thinsp;/&thinsp;${String(N).padStart(2,'0')}`;
+  titleBar.textContent = TITLES[cur];
+  btnPrev.disabled = cur === 0;
+  btnNext.disabled = cur === N - 1;
+  dots.forEach((d,i) => d.classList.toggle('on', i === cur));
+  railPips.forEach((p,i) => p.classList.toggle('on', i === cur));
+  navLinks.forEach(l => l.classList.toggle('on', parseInt(l.dataset.s) === cur));
+}
+
+/* ══ ENTRY ANIMATION ══ */
+const animated = new Set();
+function triggerIn(i) {
+  const el = document.getElementById(SLIDES[i]);
+  if (!el) return;
+  if (!animated.has(i)) {
+    animated.add(i);
+    el.classList.add('in');
+    el.querySelectorAll('[data-t]').forEach(animCount);
+  }
+}
+
+/* ══ KEYBOARD ══ */
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown')  { e.preventDefault(); go(cur+1); }
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')    { e.preventDefault(); go(cur-1); }
+});
+
+/* ══ WHEEL (throttled) ══ */
+let wt = null;
+window.addEventListener('wheel', e => {
+  e.preventDefault();
+  if (wt) return;
+  wt = setTimeout(() => wt = null, 900);
+  go(cur + (e.deltaY > 0 ? 1 : -1));
+}, {passive: false});
+
+/* ══ TOUCH SWIPE ══ */
+let tx0 = 0;
+window.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; }, {passive:true});
+window.addEventListener('touchend', e => {
+  const dx = tx0 - e.changedTouches[0].clientX;
+  if (Math.abs(dx) > 50) go(cur + (dx > 0 ? 1 : -1));
+});
+
+/* ══ HERO VIDEO DETECTION ══ */
+const heroVideo = document.getElementById('heroVideo');
+const hslides   = document.getElementById('hslides');
+heroVideo.addEventListener('canplay', () => {
+  heroVideo.style.display = 'block';
+  hslides.style.display   = 'none';
+});
+heroVideo.addEventListener('error', () => {
+  heroVideo.style.display = 'none';
+  hslides.style.display   = 'block';
+});
+
+/* ══ HERO IMAGE SLIDESHOW (fallback) ══ */
+const himgs = [0,1,2].map(i => document.getElementById('hsi'+i));
+const hdots = document.querySelectorAll('.hd');
+let ch = 0;
+function hs(i) {
+  himgs[ch].classList.remove('on');
+  hdots[ch].classList.remove('on');
+  hdots[ch].style.width = '8px';
+  ch = i;
+  himgs[i].classList.add('on');
+  hdots[i].classList.add('on');
+  hdots[i].style.width = '26px';
+}
+setInterval(() => hs((ch+1) % 3), 6000);
+
+/* ══ ANIMATED COUNTERS ══ */
+const counted = new Set();
+function animCount(el) {
+  if (counted.has(el)) return;
+  counted.add(el);
+  const tgt = parseFloat(el.dataset.t);
+  const sfx = el.dataset.x || '';
+  const dur = 1600;
+  const t0  = performance.now();
+  const fmt = v => tgt >= 100 ? Math.floor(v).toLocaleString() : Math.floor(v);
+  const run = now => {
+    const p = Math.min((now - t0) / dur, 1);
+    const e = 1 - Math.pow(1 - p, 3);
+    el.textContent = fmt(e * tgt) + sfx;
+    if (p < 1) requestAnimationFrame(run);
+  };
+  requestAnimationFrame(run);
+}
+
+/* ══ RETAIL TABS ══
+   📸 To change retail images: replace each  img:  URL below.
+   Same pattern as Entertainment — renderRetail(i) works identically to renderED(i).
+   ════════════════════════════════════════════════════════ */
+const RD = [
+  // TAB 0 — LUXURY  📸 replace img URL
+  {tag:'LUXURY',       num:'200+',         title:'Luxury Brands',       desc:'Louis Vuitton, Chanel, Gucci, Hermès, Cartier, Tiffany & Co., Rolex, Van Cleef & Arpels — the world\'s most coveted names. All in Fashion Avenue.', img:'images/luxury.webp'},
+  // TAB 1 — FLAGSHIP  📸 replace img URL
+  {tag:'FLAGSHIP',     num:'50+',          title:'Flagship Concepts',   desc:'Apple, Samsung, H&M, Zara, Bloomingdale\'s, Galeries Lafayette — global flagship formats built to perform in the world\'s most visited retail destination.', img:'images/flagship.jpg'},
+  // TAB 2 — POP-UP  📸 replace img URL
+  {tag:'POP-UP',       num:'Year-Round',   title:'Pop-Up Activation',   desc:'Flexible short-term formats with direct access to 111M+ visitors. The world\'s greatest test market — prove your concept before committing permanently.', img:'images/pop up.webp'},
+  // TAB 3 — F&B  📸 replace img URL
+  {tag:'F&B',          num:'200+',         title:'Dining Venues',        desc:'Fountain-view fine dining to fast casual. Every price point. Every cuisine. Guests plan their entire day around the food experience at Dubai Mall.', img:'images/food.webp'},
+];
+
+function renderRetail(i) {
+  const d = RD[i];
+  document.getElementById('rpanel').innerHTML = `
+    <img src="${d.img}" alt="${d.title}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;display:block;transition:transform 8s ease"/>
+    <div class="edov"></div>
+    <div class="edcontent">
+      <div class="edtag">${d.tag}</div>
+      <div class="edtitle" style="font-size:clamp(28px,4vw,64px);font-weight:600;font-family:var(--fd);color:var(--gold);line-height:1;margin-bottom:8px">${d.num}</div>
+      <div class="edtitle" style="font-size:26px;font-weight:400;margin-bottom:12px">${d.title}</div>
+      <div class="eddesc">${d.desc}</div>
+      <button class="bt" onclick="go(7)">INQUIRE ABOUT LEASING →</button>
+    </div>`;
+}
+
+function rTab(btn, i) {
+  document.querySelectorAll('.rtab').forEach(t => t.classList.remove('on'));
+  btn.classList.add('on');
+  renderRetail(i);
+}
+renderRetail(0);
+
+/* ══ ENTERTAINMENT ══
+   📸 To change images on the Entertainment slide (Page 6):
+   Each object below has an  img:  field — replace the URL with your own.
+   You can also change tag, title, desc, stat, sl (stat label).
+   ════════════════════════════════════════════════════════ */
+const ED = [
+  // ITEM 1 ↓ img = Aquarium image
+  {tag:'WORLD RECORD',    title:'Dubai Aquarium & Underwater Zoo', desc:"World's largest suspended aquarium tank — 32.88m wide, 33,000+ marine animals. One of the most-photographed locations in the Middle East.", img:'images/aquarium.jpg', stat:'33,000+', sl:'Marine Animals'},
+  // ITEM 2 ↓ img = Ice Rink image
+  {tag:'OLYMPIC STANDARD',title:'Dubai Ice Rink',                 desc:'Full Olympic-sized rink, open year-round in the desert. Hockey leagues, recreational skating, and ice shows drawing thousands of visitors weekly.',          img:'images/ice.jpg', stat:'Olympic',   sl:'Standard Rink'},
+  // ITEM 3 ↓ img = Dubai Fountain image
+  {tag:'ICONIC',          title:'Dubai Fountain',                 desc:"World's largest choreographed fountain system on Burj Khalifa Lake. 22 shows daily — thousands drawn to the mall's waterfront terraces every single evening.", img:'images/dubai fountain.webp', stat:'22',        sl:'Shows Daily'},
+  // ITEM 4 ↓ img = Burj Khalifa image
+  {tag:"WORLD'S TALLEST", title:'At The Top, Burj Khalifa',       desc:"Direct access from Dubai Mall to the world's tallest building's observation decks — a singular experience driving millions of additional premium visits annually.", img:'images/at the top.jpg', stat:'828m',      sl:"World's Tallest"},
+  // ITEM 5 ↓ img = Sports District image
+  {tag:'NEW',             title:'Zabeel Sports District',         desc:'Multi-sport complex — padel, tennis, cricket, full fitness. Reinforcing Dubai Mall as a complete lifestyle destination that maximises dwell time beyond shopping.',     img:'images/zabeelsports.jpg', stat:'Multi-sport',sl:'Complex'},
+  // ITEM 6 ↓ img = Cinema image
+  {tag:'ENTERTAINMENT',   title:'Reel Cinemas & Immersive VR',    desc:'22 cinema screens plus cutting-edge immersive entertainment. A complete evening destination driving high-frequency repeat visits from residents and tourists alike.',   img:'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1400&q=80', stat:'22',        sl:'Cinema Screens'},
+];
+function renderED(i) {
+  const d = ED[i];
+  document.getElementById('ed').innerHTML = `
+    <img src="${d.img}" alt="${d.title}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0"/>
+    <div class="edov"></div>
+    <div class="edcontent">
+      <div class="edtag">${d.tag}</div>
+      <div class="edtitle">${d.title}</div>
+      <div class="eddesc">${d.desc}</div>
+      <div class="edstat">${d.stat}</div>
+      <div class="edsl">${d.sl.toUpperCase()}</div>
+      <div style="margin-top:20px"><button class="bt" onclick="go(7)">BECOME A PARTNER →</button></div>
+    </div>`;
+}
+function eTab(btn, i) {
+  document.querySelectorAll('.ei').forEach(e => e.classList.remove('on'));
+  btn.classList.add('on');
+  renderED(i);
+}
+renderED(0);
+
+/* ══ EVENTS TABS ══ */
+function evTab(btn, id) {
+  document.querySelectorAll('.etb').forEach(t => t.classList.remove('on'));
+  document.querySelectorAll('.ep').forEach(p => p.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById(id).classList.add('on');
+}
+
+/* ══ SPONSOR CARDS ══ */
+function spTab(i) {
+  [0,1,2].forEach(j => document.getElementById('sp'+j).classList.toggle('on', j===i));
+}
+
+/* ══ CONTACT FORM ══ */
+function submitF() {
+  const n = document.getElementById('fN').value;
+  const e = document.getElementById('fE').value;
+  if (!n || !e) { alert('Please enter your name and email address.'); return; }
+  document.getElementById('fArea').style.display = 'none';
+  document.getElementById('fOk').style.display   = 'block';
+}
+
+/* ══ INIT ══ */
+go(0);
+</script>
+</body>
+</html>
